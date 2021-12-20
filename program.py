@@ -1,6 +1,6 @@
 import openpyxl
 from pathlib import Path
-from parsivar import FindStems
+from parsivar import *
 from parsivar import Normalizer
 from parsivar import Tokenizer
 import stopWords
@@ -11,6 +11,7 @@ wb_obj = openpyxl.load_workbook(xlsx_file)
 sheet = wb_obj.active
 
 punc = '''!()-[]{};:'"\,<>./?@#$%^&*_~'''
+
 my_normalizer = Normalizer()
 def preprocessing(line):
     for p in punc:
@@ -18,8 +19,8 @@ def preprocessing(line):
 
     my_tokenizer = Tokenizer()
     words = my_tokenizer.tokenize_words(my_normalizer.normalize(line))
-    # my_stemmer = FindStems()
-    # stemFree = []
+    my_stemmer = FindStems()
+    stemFree = []
 
     for word in stopWords.stopWords:
         for token in words:
@@ -62,7 +63,7 @@ for row in sheet.iter_rows():
 
 
 # print(fileno)
-posindex_file = open("new2.pkl", "wb")
+posindex_file = open("withstem.pkl", "wb")
 pickle.dump(pos_index, posindex_file)
 posindex_file.close()
 
